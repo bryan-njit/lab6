@@ -14,4 +14,9 @@
         android:id="@+id/nav_campgrounds"
         android:icon="@drawable/outline_camping_24"
         android:title="Campground" />
+
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/baseline_settings_24"
+        android:title="Settings" />
 </menu>

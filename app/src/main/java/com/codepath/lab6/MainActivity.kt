@@ -22,6 +22,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // load saved settings before the screen is drawn
+        val prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+        applyDarkMode(prefs.getBoolean(DARK_MODE, false))
+
         super.onCreate(savedInstanceState)
 
         // Set up ViewBinding
@@ -32,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         val homeFragment = HomeFragment()
         val parksFragment = ParksFragment()
         val campgroundFragment = CampgroundFragment()
+        val settingsFragment = SettingsFragment()
 
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
 
@@ -42,6 +47,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_home -> fragment = homeFragment
                 R.id.nav_parks -> fragment = parksFragment
                 R.id.nav_campgrounds -> fragment = campgroundFragment
+                R.id.nav_settings -> fragment = settingsFragment
             }
             replaceFragment(fragment)
             // show which tab we're on under the app name
@@ -50,7 +56,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Set default selection, or go back to the tab we were on if the activity got recreated
-        bottomNavigationView.selectedItemId = savedInstanceState?.getInt(SELECTED_TAB) ?: R.id.nav_home
+        val startTab = if (prefs.getBoolean(START_ON_PARKS, false)) R.id.nav_parks else R.id.nav_home
+        bottomNavigationView.selectedItemId = savedInstanceState?.getInt(SELECTED_TAB) ?: startTab
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
