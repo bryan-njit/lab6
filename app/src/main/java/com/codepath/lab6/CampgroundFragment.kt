@@ -2,6 +2,7 @@ package com.codepath.lab6
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -75,6 +76,7 @@ class CampgroundFragment : Fragment() {
                 throwable: Throwable?
             ) {
                 Log.e(TAG, "Failed to fetch campgrounds: $statusCode")
+                context?.let { Toast.makeText(it, "Couldn't load campgrounds, try again later", Toast.LENGTH_SHORT).show() }
             }
 
             override fun onSuccess(statusCode: Int, headers: Headers, json: JSON) {

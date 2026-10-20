@@ -55,9 +55,16 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        // Set default selection, or go back to the tab we were on if the activity got recreated
-        val startTab = if (prefs.getBoolean(START_ON_PARKS, false)) R.id.nav_parks else R.id.nav_home
-        bottomNavigationView.selectedItemId = savedInstanceState?.getInt(SELECTED_TAB) ?: startTab
+        if (savedInstanceState == null) {
+            // Set default selection
+            val startTab = if (prefs.getBoolean(START_ON_PARKS, false)) R.id.nav_parks else R.id.nav_home
+            bottomNavigationView.selectedItemId = startTab
+        } else {
+            // activity got recreated (like after turning on dark mode), the fragment manager already
+            // brings back the old fragment so don't replace it again, just put the subtitle back
+            supportActionBar?.subtitle =
+                bottomNavigationView.menu.findItem(savedInstanceState.getInt(SELECTED_TAB))?.title
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
