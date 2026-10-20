@@ -15,6 +15,7 @@ fun createJson() = Json {
 }
 
 private const val TAG = "MainActivity/"
+private const val SELECTED_TAB = "selected_tab"
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,8 +49,13 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        // Set default selection
-        bottomNavigationView.selectedItemId = R.id.nav_home
+        // Set default selection, or go back to the tab we were on if the activity got recreated
+        bottomNavigationView.selectedItemId = savedInstanceState?.getInt(SELECTED_TAB) ?: R.id.nav_home
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(SELECTED_TAB, binding.bottomNavigation.selectedItemId)
     }
 
     private fun replaceFragment(fragment: Fragment) {
