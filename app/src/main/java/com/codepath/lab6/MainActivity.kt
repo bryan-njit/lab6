@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        val homeFragment = HomeFragment()
         val parksFragment = ParksFragment()
         val campgroundFragment = CampgroundFragment()
 
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.setOnItemSelectedListener { item ->
             lateinit var fragment: Fragment
             when (item.itemId) {
+                R.id.nav_home -> fragment = homeFragment
                 R.id.nav_parks -> fragment = parksFragment
                 R.id.nav_campgrounds -> fragment = campgroundFragment
             }
@@ -47,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Set default selection
-        bottomNavigationView.selectedItemId = R.id.nav_parks
+        bottomNavigationView.selectedItemId = R.id.nav_home
     }
 
     private fun replaceFragment(fragment: Fragment) {
