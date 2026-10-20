@@ -50,7 +50,10 @@ class CampgroundFragment : Fragment() {
         campgroundAdapter = CampgroundAdapter(view.context, campgrounds)
         campgroundsRecyclerView.adapter = campgroundAdapter
 
-        fetchCampgrounds()
+        // only fetch once so switching tabs doesn't add the same campgrounds again
+        if (campgrounds.isEmpty()) {
+            fetchCampgrounds()
+        }
 
         // Update the return statement to return the inflated view from above
         return view

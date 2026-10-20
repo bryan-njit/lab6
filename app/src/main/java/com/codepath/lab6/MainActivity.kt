@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.codepath.lab6.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.serialization.json.Json
 
 // Helper function for JSON parsing
@@ -27,8 +28,26 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        // Call helper method to swap the FrameLayout with the fragment
-        replaceFragment(ParksFragment())
+        val parksFragment = ParksFragment()
+        val campgroundFragment = CampgroundFragment()
+
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+
+        // swap the fragment when a tab is picked
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            lateinit var fragment: Fragment
+            when (item.itemId) {
+                R.id.nav_parks -> fragment = parksFragment
+                R.id.nav_campgrounds -> fragment = campgroundFragment
+            }
+            replaceFragment(fragment)
+            // show which tab we're on under the app name
+            supportActionBar?.subtitle = item.title
+            true
+        }
+
+        // Set default selection
+        bottomNavigationView.selectedItemId = R.id.nav_parks
     }
 
     private fun replaceFragment(fragment: Fragment) {
